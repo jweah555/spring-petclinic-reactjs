@@ -48,9 +48,17 @@ a {
 
 .brand {
   font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
 }
 
-.header a.active {
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.nav a.active {
   font-weight: 600;
 }
 
@@ -69,6 +77,8 @@ a {
 }
 
 input,
+select,
+textarea,
 button {
   font: inherit;
   padding: 6px 10px;
@@ -92,6 +102,17 @@ button,
   border: 1px solid var(--accent);
   border-radius: 6px;
   text-decoration: none;
+}
+
+.button.secondary {
+  background: transparent;
+  color: var(--accent);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 button:disabled {
@@ -118,13 +139,21 @@ button:disabled {
   gap: 4px;
 }
 
-.field input[aria-invalid] {
+.label {
+  font-weight: 600;
+}
+
+.field [aria-invalid] {
   border-color: var(--error);
 }
 
 .field-error {
   margin: 0;
   font-size: 0.875rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
 }
 
 table {

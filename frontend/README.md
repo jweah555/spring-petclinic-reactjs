@@ -1,32 +1,61 @@
-# React + TypeScript + Vite
+# PetClinic frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Modern React frontend for the Spring Boot PetClinic REST API in this repository. It replaces the legacy `client/` app (React 15 / webpack 1), which no longer builds.
 
-Currently, two official plugins are available:
+**Stack:** Vite · React 19 · TypeScript · React Router · TanStack Query · React Hook Form + Zod
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Run it
 
-## React Compiler
+You need Java 17+ and Node 20+.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Start the backend from the repository root (port 9966):
+   ```
+   ./mvnw spring-boot:run
+   ```
+2. In another terminal, start the frontend:
+   ```
+   cd frontend
+   npm install
+   npm run dev
+   ```
+3. Open http://localhost:5173
 
-## Expanding the Oxlint configuration
+The Vite dev server proxies `/petclinic/*` to `http://localhost:9966`, so the browser talks to a single origin and no CORS setup is needed.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+The backend uses an in-memory HSQLDB database by default, so data you add is reset when the backend restarts.
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+## Features
+
+- Find owners by last name, view an owner with their pets and visits
+- Add and edit owners
+- Add and edit pets
+- Add visits
+- List veterinarians and their specialties
+
+## Scripts
+
+| Command | What it does |
+|---|---|
+| `npm run dev` | Start the dev server with hot reload |
+| `npm run build` | Type-check and build for production into `dist/` |
+| `npm run lint` | Lint with oxlint |
+| `npm run preview` | Serve the production build locally |
+
+## Project structure
+
+```
+src/
+├── api/            fetch wrapper (client.ts) and server validation error mapping (formErrors.ts)
+├── components/     shared UI: layout, form field, loading/error status
+├── features/       one folder per feature: types, API hooks, schemas, pages
+│   ├── home/
+│   ├── owners/
+│   ├── pets/
+│   ├── visits/
+│   └── vets/
+├── utils/
+├── App.tsx         route table
+└── main.tsx        providers (TanStack Query, React Router)
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Note: this backend reports validation errors in an `errors` response header rather than the response body; `api/client.ts` reads it so forms can show the messages next to the matching fields.

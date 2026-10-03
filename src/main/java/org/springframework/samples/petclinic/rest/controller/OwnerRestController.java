@@ -173,11 +173,38 @@ public class OwnerRestController implements OwnersApi {
         if (owner == null || pet == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            if (!pet.getOwner().equals(owner)) {
+            if (!isOwnedBy(pet, owner)) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             } else {
                 return new ResponseEntity<>(petMapper.toPetDto(pet), HttpStatus.OK);
             }
         }
+    }
+
+    @PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
+    @Override
+    public ResponseEntity<Void> updateOwnersPet(Integer ownerId, Integer petId, PetFieldsDto petFieldsDto) {
+        Owner owner = this.clinicService.findOwnerById(ownerId);
+        Pet currentPet = this.clinicService.findPetById(petId);
+        if (owner == null || currentPet == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (!isOwnedBy(currentPet, owner)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        PetType petType = this.clinicService.findPetTypeById(petFieldsDto.getType().getId());
+        if (petType == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        currentPet.setName(petFieldsDto.getName());
+        currentPet.setBirthDate(petFieldsDto.getBirthDate());
+        currentPet.setType(petType);
+        this.clinicService.savePet(currentPet);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Entities don't override equals(), so two loads of the same owner are different objects; compare ids instead.
+    private static boolean isOwnedBy(Pet pet, Owner owner) {
+        return pet.getOwner() != null && pet.getOwner().getId().equals(owner.getId());
     }
 }

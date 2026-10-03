@@ -1,6 +1,10 @@
 # React Frontend for Spring Boot PetClinic demo
 [![Build Status](https://travis-ci.org/spring-petclinic/spring-petclinic-reactjs.svg?branch=master)](https://travis-ci.org/spring-petclinic/spring-petclinic-reactjs)
 
+> **Modern frontend:** a working Vite + React 19 + TypeScript frontend lives in [`frontend/`](frontend/README.md).
+> Start the backend with `./mvnw spring-boot:run`, then run `npm install && npm run dev` in `frontend/` and open http://localhost:5173.
+> The original `client/` app below is kept for reference but no longer builds with current tooling.
+
 This project is a port of the [Spring (Boot) PetClinic demo](https://github.com/spring-projects/spring-petclinic) with a frontend built using [ReactJS](https://facebook.github.io/react/) and
 [TypeScript](https://www.typescriptlang.org/). 
 

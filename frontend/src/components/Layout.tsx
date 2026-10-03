@@ -4,9 +4,12 @@ export default function Layout() {
   return (
     <>
       <header className="header">
-        <span className="brand">PetClinic</span>
-        <nav>
-          <NavLink to="/owners">Owners</NavLink>
+        <NavLink to="/" className="brand" end>
+          PetClinic
+        </NavLink>
+        <nav className="nav">
+          <NavLink to="/owners">Find owners</NavLink>
+          <NavLink to="/vets">Veterinarians</NavLink>
         </nav>
       </header>
       <main className="main">

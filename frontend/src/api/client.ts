@@ -17,6 +17,10 @@ export class ApiError extends Error {
   }
 }
 
+export function isNotFound(error: unknown): boolean {
+  return error instanceof ApiError && error.status === 404
+}
+
 // This backend reports validation failures in an `errors` response header (a JSON array),
 // not in the response body.
 function parseFieldErrors(response: Response): FieldError[] {
@@ -47,7 +51,9 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
     )
   }
 
-  return response.json() as Promise<T>
+  // Updates answer 204 No Content, so there is no JSON to parse.
+  const text = await response.text()
+  return (text ? JSON.parse(text) : undefined) as T
 }
 
 export function apiGet<T>(path: string): Promise<T> {
@@ -56,4 +62,8 @@ export function apiGet<T>(path: string): Promise<T> {
 
 export function apiPost<T>(path: string, body: unknown): Promise<T> {
   return request<T>('POST', path, body)
+}
+
+export function apiPut(path: string, body: unknown): Promise<void> {
+  return request<void>('PUT', path, body)
 }
