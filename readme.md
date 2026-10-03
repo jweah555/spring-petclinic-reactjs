@@ -1,9 +1,6 @@
 # React Frontend for Spring Boot PetClinic demo
-[![Build Status](https://travis-ci.org/spring-petclinic/spring-petclinic-reactjs.svg?branch=master)](https://travis-ci.org/spring-petclinic/spring-petclinic-reactjs)
-
-> **Modern frontend:** a working Vite + React 19 + TypeScript frontend lives in [`frontend/`](frontend/README.md).
-> Start the backend with `./mvnw spring-boot:run`, then run `npm install && npm run dev` in `frontend/` and open http://localhost:5173.
-> The original `client/` app below is kept for reference but no longer builds with current tooling.
+> **Modern frontend:** the original React 15 `client/` app no longer built with current tooling and has been replaced by
+> a Vite + React 19 + TypeScript frontend in [`frontend/`](frontend/README.md).
 
 This project is a port of the [Spring (Boot) PetClinic demo](https://github.com/spring-projects/spring-petclinic) with a frontend built using [ReactJS](https://facebook.github.io/react/) and
 [TypeScript](https://www.typescriptlang.org/). 
@@ -24,25 +21,26 @@ If you like to help and contribute (there's lot root for improvements! I've coll
 
 ## Install and run
 
-Note: Spring Boot Server App must be running before starting the client!
+1. Start the Spring Boot backend from the project's root folder (runs on port 9966):
+   ```
+   ./mvnw spring-boot:run
+   ```
+   Check the API is up, for example by listing the pet types:
+   ```
+   curl http://localhost:9966/petclinic/api/pettypes
+   ```
+   Interactive API docs: http://localhost:9966/petclinic/swagger-ui/index.html
 
-To start the server, launch a Terminal and run from the project's root folder (`spring-petclinic`):
-```
-./mvnw spring-boot:run
-```
+2. In a second terminal, start the frontend from the `frontend` folder:
+   ```
+   cd frontend
+   npm install
+   npm run dev
+   ```
 
-When the server is running you can try to access the API for example to query all known pet types:
-```
-curl http://localhost:8080/api/pettypes
-```
+3. Open http://localhost:5173
 
-After starting the server you can install and run the client from the `client` folder:
-
-1. `npm install` (installs the node modules and the TypeScript definition files)
-2. `PORT=4444 npm start` 
-3. Open `http://localhost:4444`
-
-(Why not use the same server for backend and frontend? Because Webpack does a great job for serving JavaScript-based SPAs and I think it's not too uncommon to run this kind of apps using two dedicated server, one for backend, one for frontend)
+See [frontend/README.md](frontend/README.md) for more details.
 
 ## Feedback
 
